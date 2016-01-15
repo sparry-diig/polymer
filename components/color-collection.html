@@ -1,0 +1,32 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="color-element.html">
+
+
+<dom-module id="color-collection">
+
+  <template>
+    <iron-ajax
+        auto
+        url="/names.json"
+        handle-as="json"
+        last-response="{{response}}"
+    ></iron-ajax>
+    <p>{{requestURL}}</p>
+    <template is="dom-repeat" items="{{response}}">
+        <color-element owner="{{item.name}}" favouritecolor="{{item.color}}"></color-element>
+    </template>
+  </template>
+
+  <script>
+    Polymer({
+      is: "color-collection",
+      properties: {
+          response: {
+              type: Array
+          }
+      }
+    });
+  </script>
+
+</dom-module>

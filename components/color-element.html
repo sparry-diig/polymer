@@ -1,0 +1,30 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<dom-module id="color-element">
+
+  <template>
+    <style>
+        #favcolor {
+            color: var(--favouritecolor, black);
+        } 
+    </style>
+    <p>Hi! My Name is {{owner}} and my favourite color is <span id="favcolor">{{favouritecolor}}</span></p>
+  </template>
+
+  <script>
+    Polymer({
+      is: "color-element",
+      properties: {
+        owner: String,
+        favouritecolor: {
+            type: String,
+            value: "black"
+        }
+      },
+      ready: function() {
+          this.customStyle['--favouritecolor'] = this.favouritecolor;
+      }
+    });
+  </script>
+
+</dom-module>
