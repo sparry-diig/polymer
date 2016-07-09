@@ -1,0 +1,73 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="..\..\bower_components/polymer/polymer.html">
+
+<dom-module id="stampduty-line">
+    <template>
+        <style>
+            :host {
+                display: block;
+            }
+            * {
+                background-color: white;
+            }
+        </style>
+        <br/>
+        <div>On an amount of {{amount}} {{bandText}} at a rate of {{percentage}} is {{result}}</div>
+    </template>
+    <script>
+        (function () {
+            'use strict';
+
+            Polymer({
+                is: 'stampduty-line',
+
+                properties: {
+                    result: {
+                        type: Number,
+                        notify: true
+                    },
+                    amount: {
+                        type: Number,
+                        observer: 'amountChanged'
+                    },
+                    bandstart: Number,
+                    bandend: Number,
+                    pecentage: Number,
+                    bandText: String
+                },
+                updateBandText: function () {
+                    if (this.bandend > 0.0) {
+                        this.bandText = 'for band ' + this.bandstart + ' to ' + this.bandend;
+                    } else {
+                        this.bandText = 'for band ' + this.bandstart + ' and upwards';
+                    }
+                },
+                amountChanged: function (newValue) {
+                    var ratableValue = 0.0;
+                    if (newValue >= this.bandstart) {
+                        if (this.bandend > 0 && newValue > this.bandend) {
+                            ratableValue = this.bandend - (this.bandstart - 1);
+                        } else {
+                            ratableValue = newValue - (this.bandstart - 1);
+                        }
+                    }
+                    this.result = this.percentage * ratableValue / 100.0;
+                    this.updateBandText();
+                },
+                ready: function () {
+                    this.result = 0.0;
+                    this.updateBandText();
+                }
+            });
+        })();
+    </script>
+</dom-module>
